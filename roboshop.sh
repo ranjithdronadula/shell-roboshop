@@ -1,4 +1,4 @@
-#1/bin/bash/
+#1/bin/bash
  for i in {1.. 100}
  do
   echo $i
