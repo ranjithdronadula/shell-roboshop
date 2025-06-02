@@ -35,7 +35,7 @@ then
       
         #CREATING MONGODB USING SHELL SCRIPT
 
-        cp mongo.repo /etc/yum.repos.d/mongo.repo &>>$LOG_FILE
+        cp mongod.repo /etc/yum.repos.d/mongo.repo &>>$LOG_FILE
         VOLIDATE $? "Copying MongoDB repo"
 
         dnf install mongodb-org -y &>>$LOG_FILE
