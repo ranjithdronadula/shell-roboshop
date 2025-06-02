@@ -2,15 +2,15 @@
 
 USERID="$(id -u)"
 R="\e[31m"
-G="\e[31m"
-Y="\e[31m"
+G="\e[32m"
+Y="\e[33m"
 N="\e[0m"
 
 LOG_FOLDER="/var/log/roboshop.log"
 SCRIPT_NAME="$(echo $0 | cut -d "." f1)"
 LOG_FILES="$LOG_FOLDER/$SCRIPT_NAME.log"
 
-echo "$R This  script started excuting at :: $(date) $N" 
+echo -e "$R This  script started excuting at :: $(date) $N" 
 
 
 if [ $USERID -ne 0 ]
