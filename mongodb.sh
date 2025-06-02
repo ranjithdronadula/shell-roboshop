@@ -22,7 +22,7 @@ then
      echo -e "$G this script running with root access nothing to do $N" | tee -a $LOG_FILE
     fi 
 
-  VOLIDATE(){
+  VALIDATE(){
             if [ $1 -eq 0 ]
             then 
                 echo -e "$2 ... IS $Y SUCCSESS $N"
@@ -37,19 +37,19 @@ then
         #CREATING MONGODB USING SHELL SCRIPT
 
         cp mongod.repo /etc/yum.repos.d/mongo.repo &>>$LOG_FILE
-        VOLIDATE $? "Copying MongoDB repo"
+        VALIDATE $? "Copying MongoDB repo"
 
         dnf install mongodb-org -y &>>$LOG_FILE
-        VOLIDATE $? "Installing MongoDB Server"
+        VALIDATE $? "Installing MongoDB Server"
 
         systemctl enable mongod &>>$LOG_FILE
-        VOLIDATE $? "Eanbleing MongoDB"
+        VALIDATE $? "Eanbleing MongoDB"
 
         systemctl start mongod &>>$LOG_FILE 
-        VOLIDATE $? "Starting MongoDB"
+        VALIDATE $? "Starting MongoDB"
 
         sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf
         VALIDATE $? "Editing MongoDB Repo file to Remote Conections"
 
         systemctl restart mongod &>>$LOG_FILE
-        Volidate $? "Restartig MongoDB"
+        VALIDATE $? "Restartig MongoDB"
