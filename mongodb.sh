@@ -23,9 +23,9 @@ then
   VOLIDATE(){
             if [ $1 -eq 0 ]
             then 
-                echo "$2 ... IS SUCCSESS"
+                echo -e "$2 ... IS SUCCSESS"
             else
-                echo  $2.....is FAILURE"
+                echo -e "$2.....is FAILURE"
                 exit 1
             }
     fi
