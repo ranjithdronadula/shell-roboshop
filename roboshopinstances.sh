@@ -36,3 +36,5 @@ if [ $instances != frontend ]
       }
     }]
   }'    
+
+done
