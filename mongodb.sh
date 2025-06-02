@@ -19,7 +19,6 @@ then
     exit 1
  else
      echo -e "this script running with root access nothing to do" 
-  fi
 
   VOLIDATE(){
             if [ $1 -eq 0 ]
@@ -28,5 +27,5 @@ then
             else
                 echo  $2.....is FAILURE"
                 exit 1
-      
             }
+    fi
