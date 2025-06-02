@@ -3,7 +3,7 @@
 AMI_ID="ami-09c813fb71547fc4f"
 SG_ID="sg-0004821aded493804"
 INSTANCES=("mongodb" "mysql" "rabbitmq" "redis" "catalogue" "user" "cart" "shipping" "pyement" "dispatch" "frontend")
-HOSTZONE_ID="Z08241221PV7NRI1REOJQ"
+ZONE_ID="Z08241221PV7NRI1REOJQ"
 DOMAIN_NAME="ranjithdaws.site"
 
 for instance in ${INSTANCES[@]}
@@ -28,7 +28,7 @@ if [ $instance != "frontend" ]
       "Action"              : "UPSERT"
       ,"ResourceRecordSet"  : {
         "Name"              : "'$RECORD_NAME'"
-        ,"Type"             : "CNAME"
+        ,"Type"             : "A"
         ,"TTL"              : 1
         ,"ResourceRecords"  : [{
             "Value"         : "'$IP'"
