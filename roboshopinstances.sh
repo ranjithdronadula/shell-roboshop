@@ -19,22 +19,4 @@ if [ $instance != "frontend" ]
      fi
         echo "$instances IP Address: $IP"    
 
-    aws route53 change-resource-record-sets \
-  --hosted-zone-id $zoneid \
-  --change-batch '
-  {
-    "Comment": "Creating a record set for cognito endpoint"
-    ,"Changes": [{
-      "Action"              : "UPSERT"
-      ,"ResourceRecordSet"  : {
-        "Name"              : "'$RECORD_NAME'"
-        ,"Type"             : "A"
-        ,"TTL"              : 1
-        ,"ResourceRecords"  : [{
-            "Value"         : "'$IP'"
-        }]
-      }
-    }]
-  }'    
-
-done
+    done
