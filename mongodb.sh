@@ -13,7 +13,7 @@ LOG_FILES="$LOG_FOLDER/$SCRIPT_NAME.log"
 echo "This  script started excuting at :: $(date)"
 
 
-if[ $USERID -ne 0 ]
+if [ $USERID -ne 0 ]
 then
     echo -e "ERROR  ::  plese run this script root acces"
     exit 1
