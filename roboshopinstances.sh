@@ -7,8 +7,9 @@ ZONE_ID="Z08241221PV7NRI1REOJQ" # replace with your ZONE ID
 DOMAIN_NAME="ranjithdaws.site" # replace with your domain
 
 
- echo "$AMI-ID"
- 
+ echo "$AMI_ID"
+
+
 # #for instance in ${INSTANCES[@]}
 # for instance in $@
 # do
