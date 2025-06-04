@@ -60,8 +60,7 @@ VALIDATE(){
      cd /app 
      unzip /tmp/catalogue.zip
      VALIDATE $? "Unziping catalogue"
-
-     cd /app 
+     
      npm install
      VALIDATE $? "Installing Dependenceis"
 
