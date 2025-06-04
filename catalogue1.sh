@@ -60,7 +60,7 @@ VALIDATE $? "Creating app directory"
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>>$LOG_FILE
 VALIDATE $? "Downloading Catalogue"
 
-
+rm -rf /app/* # BY REMOVING 2ND TIME WE RUN CATALOUGE 1ST CONTENT REMOVE AND 2ND CONTENT DOWNLAOD
 cd /app 
 unzip /tmp/catalogue.zip &>>$LOG_FILE
 VALIDATE $? "unzipping catalogue"
@@ -77,6 +77,7 @@ systemctl start catalogue
 VALIDATE $? "Starting Catalogue"
 
 cp $SCRIPT_DIR/mongod.repo /etc/yum.repos.d/mongo.repo 
+
 dnf install mongodb-mongosh -y &>>$LOG_FILE
 VALIDATE $? "Installing MongoDB Client"
 
