@@ -1,10 +1,10 @@
 #!/bin/bash
 
 USERID=(id -u)
-R="/e[31m"
-G="/e[32m"
-Y="/e[33m"
-N="/e[0m"
+R="\e[31m"
+G="\e[32m"
+Y="\e[33m"
+N="\e[0m"
 
 LOG_FOLDER="/var/log/roboshop.log"
 SCRIPT_NAME="$(echo $0 | cut -d "." f1)"
@@ -12,6 +12,7 @@ LOG_FILE="$LOG_FOLDER/$SCRIPT_NAME.LOG"
 SCRIPT_DIR=$PWD
 
 mkdir -p $LOG_FOLDER
+echo "Script started executing at: $(date)" | tee -a $LOG_FILE
 
 # check the user has root priveleges or not
 
