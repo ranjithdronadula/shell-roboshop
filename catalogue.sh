@@ -43,7 +43,7 @@ VALIDATE(){
      VALIDATE $? "Disabling Nodejs server"
 
      dnf module enable nodejs:20 -y
-     VALIDATE $? Enabling Nodejs:20  Servers"
+     VALIDATE $? Enabling Nodejs:20 Servers"
 
      dnf install nodejs -y
      VALIDATE $? "Installing Nodejs servers"
@@ -64,7 +64,7 @@ VALIDATE(){
      npm install
      VALIDATE $? "Installing Dependenceis"
 
-     cp $SCRIPT_DIR/catalogue.services /etc/systemd/system/catalogue.service
+     cp catalogue.services /etc/systemd/system/catalogue.service
      VALIDATE $? "Coppying catalogue services"
 
      systemctl daemon-reload
@@ -74,7 +74,7 @@ VALIDATE(){
      systemctl start catalogue 
      VALIDATE $? "Start catalogue"
 
-     cp $SCRIPT_DIR/mongod.repo /etc/yum.repos.d/mongo.repo
+     cp mongod.repo /etc/yum.repos.d/mongo.repo
      VALIDATE $? "Coppying client server"
 
      dnf install mongodb-mongosh -y
