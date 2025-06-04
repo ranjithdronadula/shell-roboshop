@@ -60,11 +60,11 @@ VALIDATE(){
      cd /app 
      unzip /tmp/catalogue.zip
      VALIDATE $? "Unziping catalogue"
-     
+
      npm install
      VALIDATE $? "Installing Dependenceis"
 
-     cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
+    #  cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
      VALIDATE $? "Coppying catalogue services"
 
      systemctl daemon-reload
