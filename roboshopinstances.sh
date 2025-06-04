@@ -6,7 +6,10 @@ INSTANCES=("mongodb" "mysql" "rabbitmq" "redis" "catalogue" "user" "cart" "shipp
 ZONE_ID="Z08241221PV7NRI1REOJQ"
 DOMAIN_NAME="ranjithdaws.site"
 
-for instance in ${INSTANCES[@]}
+
+#for instance in ${INSTANCES[@]}
+
+for instance in $@
 do  
     INSTANCE_ID=$(aws ec2 run-instances --image-id ami-09c813fb71547fc4f --instance-type t3.micro --security-group-ids sg-0004821aded493804 --tag-specifications "ResourceType=instance,Tags=[{Key=Name, Value=$instance}]" --query "Instances[0].InstanceId" --output text)
 if [ $instance != "frontend" ] 
