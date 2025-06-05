@@ -1,0 +1,99 @@
+#!/bin/bash
+
+START_TIME=$(date +%s)
+USER_ID=(id -u)
+
+R="\e[31m"
+G="\e[33m"
+Y="\e[33m"
+N="\e[0m"
+
+LOG_FOLDER="/var/log/roboshop.log"
+SCRIPT_NAME="$(echo $0 | cut -d "." f1)"
+LOG_FILE="$LOG_FOLDWE/$SCRIPT_NMAE.LOG"
+SCRIPT_DIR=$PWD
+
+mkdir -p $LOG_FOLDER
+echo "Script started executing at: $(date)" | tee -a $LOG_FILE
+
+# check the user has root priveleges or not
+
+if [ $USERID -ne 0 ]
+then
+    echo -e "$G ERROR... Please run this Script root access$N" | tee -a $LOG_FILE
+    exit 1
+ else   
+    echo -e "$Y Yor are running with root aceess..Nothing to do$N" | tee -a $LOG_FILE
+fi
+
+echo "Please enter root password to setup"
+read -s MYSQL_ROOT_PASSWORD
+
+# validate functions takes input as exit status, what command they tried to install
+VALIDATE(){
+        if [ $1 -eq 0 ]
+        then
+            echo -e "$2...... is $G SUCCESS $N" | tee -a $LOG_FILE
+         else
+            echo -e "$2.......is $R FAILURE $N" | tee -a $LOG_FILE
+            exit 1
+        fi 
+        } 
+
+dnf install maven -y
+VALIDATE $? "Installing Maven Service"
+
+id roboshop
+if [ $? -ne ]
+then
+     useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+     VALIDATE $? "Creating roboshop system user"
+else
+    echo -e ""System user roboshop already created ... $Y SKIPPING $N"
+fi
+    
+mkdir /app 
+VALIDATE $? "Creating app Directory"
+
+curl -L -o /tmp/shipping.zip https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip 
+VALIDATE $? "Downloading shipping"
+
+rm -rf /app/*
+cd /app 
+
+unzip /tmp/shipping.zip
+VALIDATE $? "Unzipping shipping files"
+
+
+mvn clean package 
+VALIDATE $? "Packaging the shipping application"
+
+mv target/shipping-1.0.jar shipping.jar 
+VALIDATE $? "Moving and renaming Jar file"
+
+
+cp SCRIPT_DIR/shipping.services /etc/systemd/system/shipping.service
+
+systemctl daemon-reload
+VALIDATE $? "Daemon reload"
+
+systemctl enable shipping
+VALIDATE $? "Enabling Shipping"
+
+systemctl start shipping
+VALIDATE $? "Starting Shipping"
+
+dnf install mysql -y 
+VALIDATE $? "Installing Mysql"
+
+mysql -h mysql.ranjithdaws.site -uroot -pMYSQL_ROOT_PASSWORD < /app/db/schema.sql
+mysql -h mysql.ranjithdaws.site -uroot -pMYSQL_ROOT_PASSWORD < /app/db/app-user.sql 
+mysql -h mysql.ranjithdaws.site -uroot -pMYSQL_ROOT_PASSWORD < /app/db/master-data.sql
+
+systemctl restart shipping
+VALIDATE $? "Restarting Shipping"
+
+END_TIME=$(date +%s)
+TOTAL_TIME=$(( $END_TIME - $START_TIME ))
+
+echo -e "Script exection completed successfully, $Y time taken: $TOTAL_TIME seconds $N" | tee -a $LOG_FILE
