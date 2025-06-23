@@ -1,5 +1,6 @@
 #!/bin/bash
 
+START_TIME=$(date +%s)
 USERID=(id -u)
 R="\e[31m"
 G="\e[32m"
@@ -45,8 +46,14 @@ VALIDATE $? "Enabling nodejs:20"
 dnf install nodejs -y &>>$LOG_FILE
 VALIDATE $? "Installing nodejs:20"
 
-useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOG_FILE
-VALIDATE $? "Creating roboshop system user"
+id roboshop
+if [ $? -ne 0 ]
+then
+    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOG_FILE
+    VALIDATE $? "Creating roboshop system user"
+else
+    echo -e "system user roboshp already created...$Y SKIPPING $N" | tee -a $LOG_FILE  
+fi
 
 mkdir -p /app 
 VALIDATE $? "Creating app directory"
@@ -54,7 +61,7 @@ VALIDATE $? "Creating app directory"
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>>$LOG_FILE
 VALIDATE $? "Downloading Catalogue"
 
-
+rm -rf /app/* # BY REMOVING 2ND TIME WE RUN CATALOUGE 1ST CONTENT REMOVE AND 2ND CONTENT DOWNLAOD
 cd /app 
 unzip /tmp/catalogue.zip &>>$LOG_FILE
 VALIDATE $? "unzipping catalogue"
@@ -71,8 +78,20 @@ systemctl start catalogue
 VALIDATE $? "Starting Catalogue"
 
 cp $SCRIPT_DIR/mongod.repo /etc/yum.repos.d/mongo.repo 
+
 dnf install mongodb-mongosh -y &>>$LOG_FILE
 VALIDATE $? "Installing MongoDB Client"
 
-mongosh --host mongodb.ranjithdaws.site </app/db/master-data.js &>>$LOG_FILE
-VALIDATE $? "Loading data into MongoDB"
+STATUS=$(mongosh --host mongodb.ranjithdaws.site --eval 'db.getMongo().getDBNames().indexOf("catalogue")')
+if [ $STATUS -lt 0 ]
+then 
+    mongosh --host mongodb.ranjithdaws.site </app/db/master-data.js &>>$LOG_FILE
+    VALIDATE $? "Loading data into MongoDB"
+else
+    echo -e "Data is already loades..$Y SKIPPING $N"
+fi    
+
+   END_TIME=$(date +%s)
+   TOTAL_TIME=$(( $END_TIME - $START_TIME ))
+
+   echo -e "Script exection completed successfully, $Y time taken: $TOTAL_TIME seconds $N" | tee -a $LOG_FILE
