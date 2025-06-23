@@ -19,10 +19,10 @@ echo "Script started executing at: $(date)" | tee -a $LOG_FILE
 
 if [ $USERID -ne 0 ]
 then
-    echo -e "$G ERROR... Please run this Script root access$N" | tee -a $LOG_FILE
+    echo -e "$G ERROR... Please run this Script root access $N" | tee -a $LOG_FILE
     exit 1
  else   
-    echo -e "$Y Yor are running with root aceess..Nothing to do$N" | tee -a $LOG_FILE
+    echo -e "$Y Yor are running with root aceess..Nothing to do $N" | tee -a $LOG_FILE
 fi
 
 # validate functions takes input as exit status, what command they tried to install
